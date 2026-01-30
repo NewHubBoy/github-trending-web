@@ -1,88 +1,44 @@
 # GitHub Trending Web
 
-A real-time dashboard displaying GitHub's trending repositories with a clean, modern UI.
+实时展示 GitHub 今日热门开源项目。
 
-## Features
+## 功能
 
-- 🔥 Real-time GitHub trending data
-- 📊 Displays repository name, description, stars, language, and link
-- ⏱️ Auto-refreshes every 5 minutes
-- 🎨 Clean, modern dark theme
-- 📱 Fully responsive design
-- 🌐 Language filtering
+- 🚀 自动获取 GitHub Trending 数据
+- ⭐ 显示项目名称、星标数、描述、编程语言
+- 🌐 支持语言筛选
+- 🔄 自动刷新（5分钟）
+- 📱 响应式设计
 
-## Tech Stack
-
-- Pure HTML, CSS, JavaScript (no frameworks)
-- Vercel for deployment
-- AllOrigins CORS proxy for fetching GitHub data
-
-## Project Structure
-
-```
-github-trending-web/
-├── index.html      # Main HTML page
-├── style.css       # Modern dark theme styling
-├── script.js       # Fetch and render trending data
-├── vercel.json     # Vercel configuration
-└── README.md       # This file
-```
-
-## Deployment to Vercel
-
-### Option 1: Vercel CLI (Recommended)
-
-1. Install Vercel CLI:
-   ```bash
-   npm i -g vercel
-   ```
-
-2. Navigate to the project directory:
-   ```bash
-   cd github-trending-web
-   ```
-
-3. Deploy to Vercel:
-   ```bash
-   vercel
-   ```
-
-4. Follow the prompts to configure your project:
-   - Set up and deploy: Yes
-   - Which scope: Your account
-   - Link to existing project: No
-   - Project name: github-trending-web (or your preferred name)
-   - Directory: ./
-   - Want to modify settings: No
-
-### Option 2: Vercel Dashboard
-
-1. Push your code to a GitHub repository
-
-2. Go to [Vercel Dashboard](https://vercel.com/dashboard)
-
-3. Click "Add New..." → "Project"
-
-4. Import your GitHub repository
-
-5. Vercel will auto-detect the configuration. Click "Deploy"
-
-## Local Development
-
-To run locally:
+## 部署到 Vercel
 
 ```bash
-# Using a simple HTTP server
-npx serve .
+# 1. 推送代码到 GitHub
+cd github-trending-web
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/NewHubBoy/github-trending-web.git
+git push -u origin main
 
-# Or with Python
-python3 -m http.server 8000
+# 2. 登录 Vercel
+# 访问 https://vercel.com
+# 用 GitHub 登录，导入 github-trending-web 仓库
+# Vercel 会自动检测并部署
 ```
 
-Then open http://localhost:8000 in your browser.
+## 本地开发
 
-## Notes
+```bash
+# 方式1: 直接打开
+open index.html
 
-- The app uses AllOrigins as a CORS proxy to fetch GitHub trending data
-- Auto-refresh is set to 5 minutes (300,000 milliseconds)
-- GitHub's trending page is fetched and parsed client-side
+# 方式2: 使用 http-server
+npx http-server .
+```
+
+## 技术栈
+
+- 纯原生 HTML/CSS/JavaScript
+- 无需后端，直接请求 GitHub API
+- Vercel 静态托管
