@@ -25,22 +25,37 @@ const refreshBtn = document.getElementById('refreshBtn');
 
 let allRepos = [];
 
+// CORS Proxy
+const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+
 // Fetch trending repositories
 async function fetchTrending() {
     showLoading();
     
     try {
-        const response = await fetch('https://github.com/trending');
+        const response = await fetch(CORS_PROXY + encodeURIComponent('https://github.com/trending'));
         if (!response.ok) throw new Error('Failed to fetch');
         
         const html = await response.text();
         allRepos = parseTrendingHTML(html);
         
+        if (allRepos.length === 0) {
+            // Fallback to API method
+            allRepos = await fetchWithAPI();
+        }
+        
         filterAndRender();
         updateTimestamp();
     } catch (error) {
         console.error('Error fetching trending:', error);
-        showError('获取数据失败，请刷新重试');
+        // Try API as fallback
+        try {
+            allRepos = await fetchWithAPI();
+            filterAndRender();
+            updateTimestamp();
+        } catch (e) {
+            showError('获取数据失败，请刷新重试');
+        }
     }
 }
 
@@ -98,7 +113,7 @@ function parseTrendingHTML(html) {
     return repos;
 }
 
-// Alternative: Use GitHub Search API
+// Alternative: Use GitHub Search API (through CORS proxy)
 async function fetchWithAPI() {
     try {
         // Most starred repos updated today
@@ -106,8 +121,10 @@ async function fetchWithAPI() {
         date.setDate(date.getDate() - 1);
         const dateStr = date.toISOString().split('T')[0];
         
+        // GitHub API supports CORS but rate limited
         const response = await fetch(
-            `${API_BASE}/search/repositories?q=created:>${dateStr}&sort=stars&order=desc&per_page=12`
+            `${API_BASE}/search/repositories?q=created:>${dateStr}&sort=stars&order=desc&per_page=12`,
+            { headers: { 'Accept': 'application/vnd.github.v3+json' } }
         );
         
         if (!response.ok) throw new Error('API failed');
